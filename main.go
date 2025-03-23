@@ -43,7 +43,7 @@ func (writer Writer) taskWrite() {
 		timeSum += d
 	}
 	avg := calcAve(timeSum.Milliseconds(), int64(index))
-	println("write time avg: ", avg)
+	println("write time avg: ", avg, "ms")
 
 	writer.wg.Done()
 }
@@ -100,12 +100,14 @@ func main() {
 
 	start := time.Now()
 	index := 0
+	capReadTimeSum := time.Duration(0)
 	readTimeSum := time.Duration(0)
 	for {
 		index++
 
 		s := time.Now()
-		isOk := r.Capture.Read(&img) // 10ms
+		isOk := r.Capture.Read(&img)
+		capReadEndTime := time.Now()
 
 		if !isOk {
 			println("read end or error")
@@ -123,16 +125,23 @@ func main() {
 		writerBlue.ch <- rgb.Blue
 
 		e := time.Now()
+
+		dCapRead := capReadEndTime.Sub(s)
+		capReadTimeSum += dCapRead
+
 		d := e.Sub(s)
 		readTimeSum += d
 	}
 
 	end := time.Now()
 	elapsed := end.Sub(start)
-	println(elapsed.Milliseconds())
+	println(elapsed.Milliseconds(), "ms")
+
+	avgCapRead := calcAve(int64(capReadTimeSum.Milliseconds()), int64(index))
+	println("cap read time avg: ", avgCapRead, "ms")
 
 	avg := calcAve(int64(readTimeSum.Milliseconds()), int64(index))
-	println("read time avg: ", avg)
+	println("read time avg: ", avg, "ms")
 
 	close(writerRed.ch)
 	close(writerGreen.ch)
