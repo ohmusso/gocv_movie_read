@@ -1,0 +1,19 @@
+gocv version: 0.39.0
+opencv lib version: 4.10.0
+VideoCaptureFPS 30
+VideoCaptureFrameCount 1147
+VideoCaptureFrameHeight 720
+VideoCaptureFrameWidth 1280
+codec h264
+start goroutine: writeTask
+start goroutine: writeTask
+start goroutine: writeTask
+start goroutine: frameCh
+read end or error
+read frame done
+cap read time avg:  4.7125435 ms
+newRGBFlame time avg:  9.936411 ms
+Total:  11426 ms
+write time avg:  0.0026155186 ms
+write time avg:  8.390584 ms
+write time avg:  9.672189 ms
